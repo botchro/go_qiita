@@ -1,4 +1,4 @@
-package main
+package qiita
 
 // User a qiita user
 type User struct {

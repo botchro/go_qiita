@@ -1,4 +1,4 @@
-package main
+package qiita
 
 // Group a qiita Group
 type Group struct {

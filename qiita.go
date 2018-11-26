@@ -1,32 +1,11 @@
-package main
+package qiita
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"net/http"
 	"time"
 )
-
-func main() {
-
-	var (
-		p = flag.Int("p", 1, "page number (default 1)")
-		n = flag.Int("n", 20, "number of items get once (default 20)")
-		q = flag.String("q", "", "search query string (default empty string)")
-	)
-	flag.Parse()
-
-	posts, err := GetItems(*p, *n, *q)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	for _, post := range posts {
-		fmt.Println(post.Title)
-	}
-}
 
 // GetItems get an array of post
 func GetItems(page int, perPage int, query string) ([]Post, error) {
@@ -48,7 +27,6 @@ func GetItems(page int, perPage int, query string) ([]Post, error) {
 	decoder := json.NewDecoder(resp.Body)
 	err = decoder.Decode(&posts)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 

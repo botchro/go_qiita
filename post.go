@@ -1,4 +1,4 @@
-package main
+package qiita
 
 // Post a qiita post
 type Post struct {

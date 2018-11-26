@@ -1,4 +1,4 @@
-package main
+package qiita
 
 // Tags an array of tag
 type Tags []struct {
