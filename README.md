@@ -1,2 +1,2 @@
-# go_qiita
+# qiita
 cli tool to view qiita.
