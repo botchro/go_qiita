@@ -20,7 +20,7 @@ func main() {
 	flag.Parse()
 
 	for {
-		// get first items
+		// get items
 		posts, err := qiita.GetItems(*p, *n, *q)
 		if err != nil {
 			fmt.Println(err)
