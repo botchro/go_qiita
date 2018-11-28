@@ -19,31 +19,50 @@ func main() {
 	)
 	flag.Parse()
 
-	// get first items
-	posts, err := qiita.GetItems(*p, *n, *q)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	for {
+		// get first items
+		posts, err := qiita.GetItems(*p, *n, *q)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	prompt := promptui.Select{
-		Label: "choose an article",
-		Items: posts,
-		Templates: &promptui.SelectTemplates{
-			Label:    "{{ . }}?",
-			Active:   "> {{ .Title | cyan }}",
-			Inactive: "  {{ .Title | cyan }}",
-			Selected: "{{ .Title | red | cyan }}",
-		},
-		Size: *s,
-	}
+		items := []qiita.Post{
+			qiita.Post{Title: fmt.Sprintf("Next Page #%d", *p)},
+			qiita.Post{Title: "Bye"},
+		}
 
-	i, _, err := prompt.Run()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		prompt := promptui.Select{
+			Label: fmt.Sprintf("Choose an item (#%d)", *p),
+			Items: append(posts, items...),
+			Templates: &promptui.SelectTemplates{
+				Label:    "{{ . }}?",
+				Active:   "> {{ .Title | cyan }}",
+				Inactive: "  {{ .Title | cyan }}",
+				Selected: "{{ .Title | red }}",
+			},
+			Size: *s,
+		}
 
-	fmt.Println(posts[i].Body)
+		i, _, err := prompt.Run()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		// next page
+		if i == len(posts) {
+			*p++
+			continue
+		}
+
+		// bye
+		if i > len(posts) {
+			return
+		}
+
+		// show post body
+		fmt.Println(posts[i].Body)
+	}
 
 }
